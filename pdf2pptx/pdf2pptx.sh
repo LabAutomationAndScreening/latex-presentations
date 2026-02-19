@@ -1,9 +1,8 @@
 #!/bin/bash
 # Alireza Shafaei - shafaei@cs.ubc.ca - Jan 2016
-# https://github.com/ashafaei/pdf2pptx/tree/master
 
-resolution=2048
-density=600
+resolution=1024
+density=300
 #colorspace="-depth 8"
 colorspace="-colorspace sRGB -background white -alpha remove"
 makeWide=true
