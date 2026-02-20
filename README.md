@@ -19,5 +19,6 @@ Converting Beamer PDFs to PPTX
 #. Clone the repo `git clone https://github.com/ashafaei/pdf2pptx pdf2pptx`
 #. remove the git configuration so we can just commit those files: `rm -rf pdf2pptx/.git`
 #. Need to install imagemagick (this version worked, but no particular reason to pin to that): `sudo apt-get update && sudo apt-get install -y imagemagick=8:6.9.12.98+dfsg1-5.2build2`
-#. Tweak the resolution if you want inside pdf2pptx.sh
+#. May also need to install zip (this version worked, but no particular reason to pin to that): `sudo apt-get update && sudo apt-get install -y zip=3.0-13ubuntu0.2`
+#. Tweak the resolution if you want inside pdf2pptx.sh (this has it )
 #. Run it `bash ./pdf2pptx/pdf2pptx.sh slas.pdf` (at high resolution and for a long presentation, this could take 3-4 minutes. you can watch for progress in the yourfilename.pdf.temp folder it creates if you're nervous)
