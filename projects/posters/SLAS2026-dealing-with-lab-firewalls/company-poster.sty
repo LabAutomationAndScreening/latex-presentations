@@ -1,0 +1,31 @@
+\ProvidesPackage{company-poster}
+
+\RequirePackage{fontspec}
+\usefonttheme{professionalfonts}
+
+% Option 1: if Overleaf has "Open Sans" installed
+\setsansfont{Open Sans}
+
+% Option 2 (more deterministic): ship TTFs in ./fonts and point fontspec at them
+% \setsansfont[
+%   Path=fonts/,
+%   UprightFont=OpenSans-Regular.ttf,
+%   ItalicFont=OpenSans-Italic.ttf,
+%   BoldFont=OpenSans-Bold.ttf,
+%   BoldItalicFont=OpenSans-BoldItalic.ttf
+% ]{OpenSans-Regular.ttf}
+
+% Make all the Gemini-special-cased elements use Open Sans too
+\setbeamerfont{normal text}{family=\sffamily}
+\setbeamerfont{headline}{family=\sffamily}
+\setbeamerfont{headline title}{family=\sffamily}
+\setbeamerfont{headline author}{family=\sffamily}
+\setbeamerfont{headline institute}{family=\sffamily}
+\setbeamerfont{block title}{family=\sffamily}
+\setbeamerfont{heading}{family=\sffamily}
+\setbeamerfont{footline}{family=\sffamily}
+
+\definecolor{lightgray}{RGB}{255, 255, 255} % for backgrounds of highlighted math block and the title header/footer text
+\definecolor{blue}{RGB}{0, 182, 213} % background of header/footer and section titles
+\definecolor{darkblue}{RGB}{240,95,37} % "Figure 1" text and horizontal bars separating header/footer from main section
+\definecolor{lightblue}{RGB}{203,240,246} % "highlighted block"
