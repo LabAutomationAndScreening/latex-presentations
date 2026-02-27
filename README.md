@@ -1,7 +1,7 @@
 # latex-presentations
 Tooling for using LaTeX to create posters and presentations along with public examples of lab automation presentations
 
-# First time setup of overleaf or updating overleaf verisons
+# First-time setup of Overleaf or updating Overleaf versions
 
 If you are simply looking to start overleaf from this repo skip to [Running Overleaf](#running-overleaf).
 
