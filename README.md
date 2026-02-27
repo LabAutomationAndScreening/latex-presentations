@@ -4,7 +4,7 @@ Tooling for using LaTeX to create posters and presentations along with public ex
 
 # First time setup of overleaf or updating overleaf verisons
 
-If you are simply looking to start overleaf from this repo skip to ![Running Overleaf](#running-overleaf).
+If you are simply looking to start overleaf from this repo skip to [Running Overleaf](#running-overleaf).
 
 1. Clone the repo `git clone https://github.com/overleaf/toolkit.git overleaf`
 2. remove the git configuration so we can just commit those files: `rm -rf overleaf/.git`
