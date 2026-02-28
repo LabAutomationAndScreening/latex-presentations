@@ -7,7 +7,7 @@ If you are simply looking to start overleaf from this repo skip to [Running Over
 
 1. Run the following to clone the repo at a given version, cleanup .git dirs and setup basic config `bash overleaf/bin/init`. that's gonna use the full sharelatex image...if you want to make a custom one, put a Dockerfile in there and look at the overleaf.rc
 
-```
+```bash
 git clone https://github.com/overleaf/toolkit.git overleaf
 cd overleaf
 git checkout 9280a93c4757e8d8b32e2228c66cc46fc7b835ae # v6.1.2
