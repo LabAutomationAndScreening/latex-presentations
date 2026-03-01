@@ -1,0 +1,14 @@
+name: ci checks
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  required-check:
+    runs-on: ubuntu-24.04
+    steps:
+        - run: |
+            #TODO : we should add some real checks at some point. Maybe fire up overleaf and confirm it works?
+            echo "passing" 
+
