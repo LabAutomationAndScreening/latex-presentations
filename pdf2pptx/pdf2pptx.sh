@@ -1,11 +1,12 @@
 #!/bin/bash
 # Alireza Shafaei - shafaei@cs.ubc.ca - Jan 2016
 # https://github.com/ashafaei/pdf2pptx/tree/master
+#
+# Modified: pages are rasterized with Ghostscript instead of ImageMagick, so this runs
+# inside the same texlive image that compile.sh uses (it has gs, zip and perl, but no
+# ImageMagick).
 
-resolution=2048
-density=600
-#colorspace="-depth 8"
-colorspace="-colorspace sRGB -background white -alpha remove"
+dpi=578 # 2048 px tall for a 16:9 Beamer page (90 mm)
 makeWide=true
 
 if [ $# -eq 0 ]; then
@@ -32,32 +33,24 @@ fi
 
 mkdir "$tempname"
 
-# Set return code of piped command to first nonzero return code
-set -o pipefail
-n_pages=$(identify "$1" | wc -l)
+gs -q -dNOPAUSE -dBATCH -dSAFER -sDEVICE=png16m -r$dpi -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -sOutputFile="$tempname"/page-%d.png "$1"
 returncode=$?
 if [ $returncode -ne 0 ]; then
-   echo "Unable to count number of PDF pages, exiting"
-   exit $returncode
+	echo "Error with extraction"
+	exit $returncode
 fi
+
+n_pages=$(ls "$tempname" | wc -l)
 if [ $n_pages -eq 0 ]; then
    echo "Empty PDF (0 pages), exiting"
    exit 1
 fi
 
-for ((i=0; i<n_pages; i++))
+for ((i=1; i<=n_pages; i++))
 do
-    convert -density $density $colorspace -resize "x${resolution}" "$1[$i]" "$tempname"/slide-$i.png
-    returncode=$?
-    if [ $returncode -ne 0 ]; then break; fi
+    mv "$tempname"/page-$i.png "$tempname"/slide-$((i-1)).png
 done
-
-if [ $returncode -eq 0 ]; then
-	echo "Extraction succ!"
-else
-	echo "Error with extraction"
-	exit $returncode
-fi
+echo "Extraction succ!"
 
 if (which perl > /dev/null); then
 	# https://stackoverflow.com/questions/1055671/how-can-i-get-the-behavior-of-gnus-readlink-f-on-a-mac#comment47931362_1115074
