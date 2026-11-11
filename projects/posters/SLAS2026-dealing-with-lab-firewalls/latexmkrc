@@ -1,0 +1,2 @@
+# The Gemini theme loads fontspec, which needs LuaLaTeX. compile.sh always passes -pdf, so swap the program -pdf runs.
+$pdflatex = 'lualatex %O %S';

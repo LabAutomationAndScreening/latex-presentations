@@ -32,12 +32,17 @@ bash overleaf/bin/init
 
 # How-tos
 
-## Converting Beamer PDFs to PPTX
+## Compiling locally (without Overleaf)
 
-1. Based on https://github.com/ashafaei/pdf2pptx
-2. Clone the repo `git clone https://github.com/ashafaei/pdf2pptx pdf2pptx`
-3. remove the git configuration so we can just commit those files: `rm -rf pdf2pptx/.git`
-4. Need to install imagemagick (this version worked, but no particular reason to pin to that): `sudo apt-get update && sudo apt-get install -y imagemagick=8:6.9.12.98+dfsg1-5.2build2`
-5. May also need to install zip (this version worked, but no particular reason to pin to that): `sudo apt-get update && sudo apt-get install -y zip=3.0-13ubuntu0.2`
-6. Tweak the resolution if you want inside pdf2pptx.sh (this has it )
-7. Run it `bash ./pdf2pptx/pdf2pptx.sh slas.pdf` (at high resolution and for a long presentation, this could take 3-4 minutes. you can watch for progress in the yourfilename.pdf.temp folder it creates if you're nervous)
+`compile.sh` compiles a project inside a pinned TeX Live Docker image, so Docker is the only thing you need installed. CI runs the same script on every PR and uploads the PDFs and PPTX as workflow artifacts.
+
+```bash
+./compile.sh projects/presentations/<name>             # every top-level .tex -> <name>/build/*.pdf, plus build/main.pptx
+./compile.sh projects/presentations/<name> --pdf-only  # skip the PPTX
+./compile.sh projects/presentations/<name>/main.tex    # only that file, PDF only (fastest for iterating)
+```
+
+- Every top-level `.tex` file in a project folder is compiled as its own document, so keep `\input` fragments in a subfolder.
+- A project with a `main.tex` also gets `build/main.pptx`, built by `pdf2pptx/` (one full-slide image per PDF page, so clicking through reproduces Beamer overlays).
+- A Beamer deck can add a two-line `handout.tex` (see the SLAS2026 presentation) to get `build/handout.pdf` with overlays collapsed to one page per frame.
+- A project that needs a different engine sets it in a `latexmkrc` in its folder (see the SLAS2026 poster, which needs LuaLaTeX for `fontspec`).

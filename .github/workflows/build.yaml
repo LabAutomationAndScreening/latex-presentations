@@ -1,0 +1,55 @@
+name: Build
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  find-projects:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    outputs:
+      projects: ${{ steps.find.outputs.projects }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Find projects
+        id: find
+        run: |
+          projects=$(find projects -mindepth 2 -maxdepth 2 -type d | sort | jq --raw-input --slurp --compact-output 'split("\n")[:-1] | map({path: ., artifact: (split("/")[1:] | join("--"))})')
+          echo "Found projects: $projects"
+          echo "projects=$projects" >> "$GITHUB_OUTPUT"
+
+  compile:
+    name: compile (${{ matrix.project.path }})
+    needs: find-projects
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        project: ${{ fromJSON(needs.find-projects.outputs.projects) }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Compile
+        env:
+          PROJECT_PATH: ${{ matrix.project.path }}
+        run: ./compile.sh "$PROJECT_PATH"
+
+      - name: Upload PDF and PPTX files
+        uses: actions/upload-artifact@v7.0.0
+        with:
+          name: ${{ matrix.project.artifact }}
+          path: |
+            ${{ matrix.project.path }}/build/*.pdf
+            ${{ matrix.project.path }}/build/*.pptx
+          if-no-files-found: error
