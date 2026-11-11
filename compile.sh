@@ -60,8 +60,11 @@ if [[ "$PROJECT_REL" == "$PROJECT_ABS" ]]; then
 fi
 
 in_container() {
+  # The image's home dir is only writable by uid 1000, so any other uid (e.g. CI runners) needs
+  # a writable HOME for LuaLaTeX's font cache.
   docker run --rm \
     --user "$(id -u):$(id -g)" \
+    -e HOME=/tmp \
     -v "$REPO_ROOT":/workdir \
     -w "/workdir/$PROJECT_REL" \
     "$IMAGE" \
